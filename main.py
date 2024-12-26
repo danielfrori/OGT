@@ -14,7 +14,7 @@ def restart_pc():
     try:
         if platform.system() == "Windows":
             command = ["shutdown", "/r", "/t", "0"]  # Restart immediately
-        else:  # Assuming Linux/Unix
+        elif platform.system() == "Linux":
             command = ["sudo", "reboot"]
 
         subprocess.run(command, check=True)
@@ -25,12 +25,22 @@ def restart_fw():
     try:
         if platform.system() == "Windows":
             command = ["shutdown", "/r", "/fw", "/f" "/t", "0"]  # Restart into firmware settings
-        else:  # Assuming Linux/Unix
+        elif platform.system() == "Linux":
             command = ["systemctl", "reboot", "--firmware-setup"]
 
         subprocess.run(command, check=True)
     except Exception as e:
         print("Error restarting PC:", e)
+
+def shutdown():
+    try:
+        if platform.system() == "Windows":
+            command = ["shutdown", "/s", "/t", "0"]  # Restart into firmware settings
+        elif platform.system() == "Linux":
+            command = ["shutdown", "now"]
+    except Exception as e:
+        print("Error restarting PC:", e)
+
 
 # Function to handle the "Exit" menu item
 def on_quit(icon, item):
@@ -53,7 +63,8 @@ def start_tray():
 
     systemMenu = Menu (
         item("Restart PC", lambda icon, item: restart_pc()),
-        item("Restart into Firmware Setup", lambda icon, item: restart_fw())
+        item("Restart into Firmware Setup", lambda icon, item: restart_fw()),
+        item("Shutdown", lambda icon, item: shutdown())
     )
 
     # Create the main menu
