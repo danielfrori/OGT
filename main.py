@@ -1,6 +1,6 @@
 import pystray
 from pystray import MenuItem as item, Menu
-from PIL import Image, ImageDraw
+from PIL import Image
 import webbrowser
 import subprocess
 import platform
@@ -15,7 +15,7 @@ def restart_pc():
         if platform.system() == "Windows":
             command = ["shutdown", "/r", "/t", "0"]  # Restart immediately
         elif platform.system() == "Linux":
-            command = ["sudo", "reboot"]
+            command = ["reboot"]
 
         subprocess.run(command, check=True)
     except Exception as e:
@@ -38,6 +38,8 @@ def shutdown():
             command = ["shutdown", "/s", "/t", "0"]  # Restart into firmware settings
         elif platform.system() == "Linux":
             command = ["shutdown", "now"]
+        
+        subprocess.run(command, check=True)
     except Exception as e:
         print("Error restarting PC:", e)
 
