@@ -9,14 +9,14 @@ import sys
 
 # Helper function to locate resources
 def resource_path(relative_path):
-    """ Get the absolute path to a resource, compatible with PyInstaller/Nuitka. """
+    """ Get the absolute path to a resource, works for both dev and bundled modes. """
     if hasattr(sys, '_MEIPASS'):
-        # If running as a bundled app, use the temporary folder created by the packager
-        base_path = sys._MEIPASS
+        # If running in a PyInstaller/Nuitka bundle
+        return os.path.join(sys._MEIPASS, relative_path)
     else:
-        # Use the normal base path for a script
-        base_path = os.path.abspath(".")
-    return os.path.join(base_path, relative_path)
+        # If running as a standard Python script
+        return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
+
 
 # Function to handle the "Open Webpage" action
 def open_webpage(page):
