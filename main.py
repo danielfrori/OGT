@@ -4,6 +4,19 @@ from PIL import Image
 import webbrowser
 import subprocess
 import platform
+import os
+import sys
+
+# Helper function to locate resources
+def resource_path(relative_path):
+    """ Get the absolute path to a resource, compatible with PyInstaller/Nuitka. """
+    if hasattr(sys, '_MEIPASS'):
+        # If running as a bundled app, use the temporary folder created by the packager
+        base_path = sys._MEIPASS
+    else:
+        # Use the normal base path for a script
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 # Function to handle the "Open Webpage" action
 def open_webpage(page):
@@ -21,10 +34,11 @@ def restart_pc():
     except Exception as e:
         print("Error restarting PC:", e)
 
+# Function to restart into firmware settings
 def restart_fw():
     try:
         if platform.system() == "Windows":
-            command = ["shutdown", "/r", "/fw", "/f" "/t", "0"]  # Restart into firmware settings
+            command = ["shutdown", "/r", "/fw", "/f", "/t", "0"]
         elif platform.system() == "Linux":
             command = ["systemctl", "reboot", "--firmware-setup"]
 
@@ -32,17 +46,17 @@ def restart_fw():
     except Exception as e:
         print("Error restarting PC:", e)
 
+# Function to shut down the PC
 def shutdown():
     try:
         if platform.system() == "Windows":
-            command = ["shutdown", "/s", "/t", "0"]  # Restart into firmware settings
+            command = ["shutdown", "/s", "/t", "0"]
         elif platform.system() == "Linux":
             command = ["shutdown", "now"]
         
         subprocess.run(command, check=True)
     except Exception as e:
-        print("Error restarting PC:", e)
-
+        print("Error shutting down PC:", e)
 
 # Function to handle the "Exit" menu item
 def on_quit(icon, item):
@@ -50,11 +64,12 @@ def on_quit(icon, item):
 
 # Function to start the system tray application
 def start_tray():
-    # Ensure the .ico file exists in the working directory or provide an absolute path
+    # Locate the icon.ico file
+    icon_path = resource_path("icon.ico")
     try:
-        icon_image = Image.open("icon.ico")
+        icon_image = Image.open(icon_path)
     except FileNotFoundError:
-        print("Error: 'icon.ico' file not found.")
+        print(f"Error: '{icon_path}' file not found.")
         return
 
     # Create the sub-menu for links
@@ -74,7 +89,7 @@ def start_tray():
         item("Steam Console", lambda icon, item: open_webpage("steam://open/console"))
     )
 
-    systemMenu = Menu (
+    systemMenu = Menu(
         item("Restart PC", lambda icon, item: restart_pc()),
         item("Restart into Firmware Setup", lambda icon, item: restart_fw()),
         item("Shutdown", lambda icon, item: shutdown())
