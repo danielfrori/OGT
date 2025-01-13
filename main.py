@@ -58,9 +58,20 @@ def start_tray():
         return
 
     # Create the sub-menu for links
-    linksMenu = Menu(
+    usefulLinksMenu = Menu(
+        item("Speedtest", lambda icon, item: open_webpage("https://www.speedtest.net/")),
+        item("Rapidtables", lambda icon, item: open_webpage("https://www.rapidtables.com/")),
+        item("TinyWow", lambda icon, item: open_webpage("https://www.tinywow.com/")),
+        item("WeTransfer", lambda icon, item: open_webpage("https://www.wetransfer.com/")),
+        item("Joypad.ai", lambda icon, item: open_webpage("https://joypad.ai/")),
+        pystray.Menu.SEPARATOR,
         item("Arch Linux", lambda icon, item: open_webpage("https://archlinux.org")),
-        item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/"))
+        item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/")),
+    )
+
+    steamMenu = Menu(
+        item("Big Picture Mode", lambda icon, item: open_webpage("steam://open/bigpicture")),
+        item("Steam Console", lambda icon, item: open_webpage("steam://open/console"))
     )
 
     systemMenu = Menu (
@@ -71,7 +82,8 @@ def start_tray():
 
     # Create the main menu
     menu = Menu(
-        item("Links", linksMenu),  # Add sub-menu here
+        item("Links", usefulLinksMenu),  # Add sub-menu here
+        item("Steam", steamMenu),
         pystray.Menu.SEPARATOR,
         item("System", systemMenu),
         item("Quit", on_quit)
