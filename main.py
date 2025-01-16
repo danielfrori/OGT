@@ -75,13 +75,26 @@ def start_tray():
     # Create the sub-menu for links
     usefulLinksMenu = Menu(
         item("Speedtest", lambda icon, item: open_webpage("https://www.speedtest.net/")),
-        item("Rapidtables", lambda icon, item: open_webpage("https://www.rapidtables.com/")),
         item("TinyWow", lambda icon, item: open_webpage("https://www.tinywow.com/")),
         item("WeTransfer", lambda icon, item: open_webpage("https://www.wetransfer.com/")),
-        item("Joypad.ai", lambda icon, item: open_webpage("https://joypad.ai/")),
-        pystray.Menu.SEPARATOR,
-        item("Arch Linux", lambda icon, item: open_webpage("https://archlinux.org")),
-        item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/")),
+        item("QR Code Generator", lambda icon, item: open_webpage("https://www.qr-code-generator.com/")),
+        item("Monkeytype", lambda icon, item: open_webpage("https://monkeytype.com/"))
+    )
+
+    gamingMenu = Menu(
+        item("PCGamingWiki", lambda icon, item: open_webpage("https://www.pcgamingwiki.com/wiki/Home")),
+        item("Joypad.ai", lambda icon, item: open_webpage("https://joypad.ai/"))
+    )
+
+    linuxMenu = Menu(
+        item("ArchWiki", lambda icon, item: open_webpage("https://wiki.archlinux.org/title/Main_page")),
+        item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/"))
+    )
+    
+    linksMenu = Menu(
+        item("Utilities", usefulLinksMenu),
+        item("Gaming", gamingMenu),
+        item("Linux Stuff", linuxMenu)
     )
 
     steamMenu = Menu(
@@ -97,7 +110,7 @@ def start_tray():
 
     # Create the main menu
     menu = Menu(
-        item("Links", usefulLinksMenu),  # Add sub-menu here
+        item("Links", linksMenu),  # Add sub-menu here
         item("Steam", steamMenu),
         pystray.Menu.SEPARATOR,
         item("System", systemMenu),
