@@ -77,11 +77,14 @@ def start_tray():
         item("Speedtest", lambda icon, item: open_webpage("https://www.speedtest.net/")),
         item("TinyWow", lambda icon, item: open_webpage("https://www.tinywow.com/")),
         item("WeTransfer", lambda icon, item: open_webpage("https://www.wetransfer.com/")),
+        item("Streamable", lambda icon, item: open_webpage("https://www.streamable.com/")),
         item("QR Code Generator", lambda icon, item: open_webpage("https://www.qr-code-generator.com/")),
         item("Monkeytype", lambda icon, item: open_webpage("https://monkeytype.com/"))
     )
 
     gamingMenu = Menu(
+        item("GG.deals", lambda icon, item: open_webpage("https://gg.deals/")),
+        item("HowLongToBeat", lambda icon, item: open_webpage("https://howlongtobeat.com/")),
         item("PCGamingWiki", lambda icon, item: open_webpage("https://www.pcgamingwiki.com/wiki/Home")),
         item("Joypad.ai", lambda icon, item: open_webpage("https://joypad.ai/"))
     )
@@ -90,16 +93,23 @@ def start_tray():
         item("ArchWiki", lambda icon, item: open_webpage("https://wiki.archlinux.org/title/Main_page")),
         item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/"))
     )
+
+    aiMenu = Menu(
+        item("ChatGPT", lambda icon, item: open_webpage("https://chatgpt.com/"))
+    )
     
     linksMenu = Menu(
         item("Utilities", usefulLinksMenu),
         item("Gaming", gamingMenu),
-        item("Linux Stuff", linuxMenu)
+        item("Linux", linuxMenu),
+        item("AI", aiMenu)
     )
 
     steamMenu = Menu(
+        item("Library", lambda icon, item: open_webpage("steam://open/games")),
         item("Big Picture Mode", lambda icon, item: open_webpage("steam://open/bigpicture")),
-        item("Steam Console", lambda icon, item: open_webpage("steam://open/console"))
+        item("Steam Console", lambda icon, item: open_webpage("steam://open/console")),
+        item("SteamDB", lambda icon, item: open_webpage("https://steamdb.info/"))
     )
 
     systemMenu = Menu(
