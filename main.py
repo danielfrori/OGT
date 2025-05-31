@@ -86,7 +86,7 @@ def start_tray():
         item("GG.deals", lambda icon, item: open_webpage("https://gg.deals/")),
         item("HowLongToBeat", lambda icon, item: open_webpage("https://howlongtobeat.com/")),
         item("PCGamingWiki", lambda icon, item: open_webpage("https://www.pcgamingwiki.com/wiki/Home")),
-        item("Joypad.ai", lambda icon, item: open_webpage("https://joypad.ai/"))
+        item("Gamepad Tester", lambda icon, item: open_webpage("https://hardwaretester.com/gamepad"))
     )
 
     linuxMenu = Menu(
