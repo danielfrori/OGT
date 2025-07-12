@@ -4,6 +4,7 @@ from PIL import Image
 import webbrowser
 import subprocess
 import platform
+import time
 import os
 import sys
 
@@ -49,10 +50,30 @@ def shutdown():
         if platform.system() == "Windows":
             run_command(["shutdown", "/s", "/t", "0"])
         elif platform.system() == "Linux":
-            command = ["shutdown", "now"]
             run_command(["shutdown", "now"])
     except Exception as e:
         print("Error shutting down PC:", e)
+
+def restart_steam():
+    try:
+        if platform.system() == "Windows":
+            run_command(["taskkill", "/IM", "steam.exe", "/F"])
+            time.sleep(3)
+    
+            # Attempt default Steam path, adjust if installed elsewhere
+            steam_path = os.path.expandvars(r"C:\\Program Files (x86)\\Steam\\Steam.exe")
+    
+            if not os.path.exists(steam_path):
+                print(f"Could not find Steam at {steam_path}. Please check the path.")
+                return
+
+            subprocess.Popen([steam_path])
+        if platform.system() == "Linux":
+            run_command(["pkill", "-x", "steam"])
+            time.sleep(3)
+            subprocess.Popen(["steam"])
+    except Exception as e:
+        print("Error restarting Steam:", e)
 
 def on_quit(icon, item):
     icon.stop()
@@ -102,7 +123,8 @@ def start_tray():
         item("Library", lambda icon, item: run_command(["steam", "steam://open/games"])),
         item("Big Picture Mode", lambda icon, item: run_command(["steam", "steam://open/bigpicture"])),
         item("Steam Console", lambda icon, item: run_command(["steam", "steam://open/console"])),
-        item("SteamDB", lambda icon, item: open_webpage("https://steamdb.info/"))
+        item("SteamDB", lambda icon, item: open_webpage("https://steamdb.info/")),
+        item("Restart Steam", lambda icon, item: restart_steam())
     )
 
     systemMenu = Menu(
