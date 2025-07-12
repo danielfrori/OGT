@@ -7,6 +7,7 @@ import platform
 import time
 import os
 import pathlib
+import json
 
 def resource_path(relative_path):
     return str(pathlib.Path(__file__).parent / relative_path)
@@ -70,6 +71,32 @@ def restart_steam():
 
 def on_quit(icon, item):
     icon.stop()
+
+def create_menu_item(config):
+    if 'submenu' in config:
+        submenu_items = [create_menu_item(sub_item) for sub_item in config['submenu']]
+        return item(config['name'], Menu(*submenu_items))
+    else:
+        action = None
+        if config.get('type') == 'webpage':
+            action = lambda icon, item: open_webpage(config['url'])
+        elif config.get('type') == 'command':
+            action = lambda icon, item: run_command(config['command'])
+        elif config.get('type') == 'function':
+            if config['function'] == 'restart_steam':
+                action = lambda icon, item: restart_steam()
+        return item(config['name'], action)
+
+def load_config(config_path):
+    try:
+        with open(config_path, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Error: Configuration file '{config_path}' not found.")
+        return None
+    except json.JSONDecodeError:
+        print(f"Error: Invalid JSON format in '{config_path}'.")
+        return None
         
 def start_tray():
     icon_path = resource_path("icon.ico")
@@ -79,61 +106,20 @@ def start_tray():
         print(f"Error: '{icon_path}' file not found.")
         return
 
-    usefulLinksMenu = Menu(
-        item("Speedtest", lambda icon, item: open_webpage("https://www.speedtest.net/")),
-        item("TinyWow", lambda icon, item: open_webpage("https://www.tinywow.com/")),
-        item("WeTransfer", lambda icon, item: open_webpage("https://www.wetransfer.com/")),
-        item("Streamable", lambda icon, item: open_webpage("https://www.streamable.com/")),
-        item("QR Code Generator", lambda icon, item: open_webpage("https://www.qr-code-generator.com/")),
-        item("Monkeytype", lambda icon, item: open_webpage("https://monkeytype.com/"))
-    )
+    config_path = resource_path("config.json")
+    config = load_config(config_path)
+    if not config:
+        return
 
-    gamingMenu = Menu(
-        item("GG.deals", lambda icon, item: open_webpage("https://gg.deals/")),
-        item("HowLongToBeat", lambda icon, item: open_webpage("https://howlongtobeat.com/")),
-        item("PCGamingWiki", lambda icon, item: open_webpage("https://www.pcgamingwiki.com/wiki/Home")),
-        item("Gamepad Tester", lambda icon, item: open_webpage("https://hardwaretester.com/gamepad"))
-    )
+    menu_items = []
+    for config_item in config:
+        if config_item.get('type') == 'separator':
+            menu_items.append(Menu.SEPARATOR)            
+        else:
+            menu_items.append(create_menu_item(config_item))
+    menu_items.append(item("Quit", on_quit))
 
-    linuxMenu = Menu(
-        item("ArchWiki", lambda icon, item: open_webpage("https://wiki.archlinux.org/title/Main_page")),
-        item("ProtonDB", lambda icon, item: open_webpage("https://www.protondb.com/"))
-    )
-
-    aiMenu = Menu(
-        item("ChatGPT", lambda icon, item: open_webpage("https://chatgpt.com/"))
-    )
-    
-    linksMenu = Menu(
-        item("Utilities", usefulLinksMenu),
-        item("Gaming", gamingMenu),
-        item("Linux", linuxMenu),
-        item("AI", aiMenu)
-    )
-
-    steamMenu = Menu(
-        item("Library", lambda icon, item: run_command(["steam", "steam://open/games"])),
-        item("Big Picture Mode", lambda icon, item: run_command(["steam", "steam://open/bigpicture"])),
-        item("Steam Console", lambda icon, item: run_command(["steam", "steam://open/console"])),
-        item("SteamDB", lambda icon, item: open_webpage("https://steamdb.info/")),
-        item("Restart Steam", lambda icon, item: restart_steam())
-    )
-
-    systemMenu = Menu(
-        item("Restart PC", lambda icon, item: restart_pc()),
-        item("Restart into Firmware Setup", lambda icon, item: restart_fw()),
-        item("Shutdown", lambda icon, item: shutdown())
-    )
-
-    menu = Menu(
-        item("Links", linksMenu),
-        item("Steam", steamMenu),
-        pystray.Menu.SEPARATOR,
-        item("System", systemMenu),
-        item("Quit", on_quit)
-    )
-
-    icon = pystray.Icon("test_icon", icon_image, "Ori General Tools", menu=menu)
+    icon = pystray.Icon("test_icon", icon_image, "Ori General Tools", menu=Menu(*menu_items))    
     icon.run()
 
 if __name__ == "__main__":
