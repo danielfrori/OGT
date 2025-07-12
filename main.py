@@ -21,33 +21,6 @@ def run_command(command):
 def open_webpage(page):
     webbrowser.open(page)
 
-def restart_pc():
-    try:
-        if platform.system() == "Windows":
-            run_command(["shutdown", "/r", "/t", "0"])
-        elif platform.system() == "Linux":
-            run_command(["reboot"])
-    except Exception as e:
-        print("Error restarting PC:", e)
-
-def restart_fw():
-    try:
-        if platform.system() == "Windows":
-            run_command(["shutdown", "/r", "/fw", "/f", "/t", "0"])
-        elif platform.system() == "Linux":
-            run_command(["systemctl", "reboot", "--firmware-setup"])
-    except Exception as e:
-        print("Error restarting PC:", e)
-
-def shutdown():
-    try:
-        if platform.system() == "Windows":
-            run_command(["shutdown", "/s", "/t", "0"])
-        elif platform.system() == "Linux":
-            run_command(["shutdown", "now"])
-    except Exception as e:
-        print("Error shutting down PC:", e)
-
 def restart_steam():
     try:
         if platform.system() == "Windows":
