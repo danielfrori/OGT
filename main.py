@@ -8,14 +8,10 @@ import time
 import os
 import sys
 
-# Helper function to locate resources
 def resource_path(relative_path):
-    """ Get the absolute path to a resource, works for both dev and bundled modes. """
     if hasattr(sys, '_MEIPASS'):
-        # If running in a PyInstaller/Nuitka bundle
         return os.path.join(sys._MEIPASS, relative_path)
     else:
-        # If running as a standard Python script
         return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
 
 def run_command(command):
@@ -79,7 +75,6 @@ def on_quit(icon, item):
     icon.stop()
         
 def start_tray():
-    # Locate the icon.ico file
     icon_path = resource_path("icon.ico")
     try:
         icon_image = Image.open(icon_path)
@@ -141,10 +136,8 @@ def start_tray():
         item("Quit", on_quit)
     )
 
-    # Create and run the system tray icon
     icon = pystray.Icon("test_icon", icon_image, "Ori General Tools", menu=menu)
     icon.run()
 
-# Start the application
 if __name__ == "__main__":
     start_tray()
