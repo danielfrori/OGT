@@ -5,16 +5,16 @@
             {
                 "name": "Submenu 1",
                 "submenu": [
-                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori"},
-                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori"}
+                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori/OGT"},
+                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori/OGT"}
                 ]
             },
             {
                 "name": "Submenu 2",
                 "submenu": [
-                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori"},
-                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori"},
-                    {"name": "Link 3", "type": "webpage", "url": "https://github.com/danielfrori"}
+                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori/OGT"},
+                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori/OGT"},
+                    {"name": "Link 3", "type": "webpage", "url": "https://github.com/danielfrori/OGT"}
                 ]
             }
         ]

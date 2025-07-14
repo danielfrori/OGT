@@ -43,8 +43,7 @@
             {"name": "Library", "type": "command", "command": ["steam", "steam://open/games"]},
             {"name": "Big Picture Mode", "type": "command", "command": ["steam", "steam://open/bigpicture"]},
             {"name": "Steam Console", "type": "command", "command": ["steam", "steam://open/console"]},
-            {"name": "SteamDB", "type": "webpage", "url": "https://steamdb.info/"},
-            {"name": "Restart Steam", "type": "function", "function": "restart_steam"}
+            {"name": "SteamDB", "type": "webpage", "url": "https://steamdb.info/"}
         ]
     },
     {"type": "separator"},
