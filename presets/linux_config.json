@@ -55,5 +55,7 @@
             {"name": "Restart into Firmware Setup", "type": "command", "command": ["systemctl", "reboot", "--firmware-setup"]},
             {"name": "Shutdown", "type": "command", "command": ["shutdown", "now"]}
         ]
-    }
+    },
+    {"name": "Restart", "type": "function", "function":  "restart"},
+    {"name": "Quit", "type": "function", "function":  "quit"}
 ]

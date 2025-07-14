@@ -1,59 +1,32 @@
 [
     {
-        "name": "Links",
+        "name": "Menu 1",
         "submenu": [
             {
-                "name": "Utilities",
+                "name": "Submenu 1",
                 "submenu": [
-                    {"name": "Speedtest", "type": "webpage", "url": "https://www.speedtest.net/"},
-                    {"name": "TinyWow", "type": "webpage", "url": "https://www.tinywow.com/"},
-                    {"name": "WeTransfer", "type": "webpage", "url": "https://www.wetransfer.com/"},
-                    {"name": "Streamable", "type": "webpage", "url": "https://www.streamable.com/"},
-                    {"name": "Monkeytype", "type": "webpage", "url": "https://monkeytype.com/"}
+                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori"},
+                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori"}
                 ]
             },
             {
-                "name": "Gaming",
+                "name": "Submenu 2",
                 "submenu": [
-                    {"name": "GG.deals", "type": "webpage", "url": "https://gg.deals/"},
-                    {"name": "HowLongToBeat", "type": "webpage", "url": "https://howlongtobeat.com/"},
-                    {"name": "PCGamingWiki", "type": "webpage", "url": "https://www.pcgamingwiki.com/wiki/Home"},
-                    {"name": "Gamepad Tester", "type": "webpage", "url": "https://hardwaretester.com/gamepad"}
-                ]
-            },
-            {
-                "name": "Linux",
-                "submenu": [
-                    {"name": "ArchWiki", "type": "webpage", "url": "https://wiki.archlinux.org/title/Main_page"},
-                    {"name": "ProtonDB", "type": "webpage", "url": "https://www.protondb.com/"}
-                ]
-            },
-            {
-                "name": "AI",
-                "submenu": [
-                    {"name": "ChatGPT", "type": "webpage", "url": "https://chatgpt.com/"},
-                    {"name": "Grok", "type": "webpage", "url": "https://grok.com/"}                    
+                    {"name": "Link 1", "type": "webpage", "url": "https://github.com/danielfrori"},
+                    {"name": "Link 2", "type": "webpage", "url": "https://github.com/danielfrori"},
+                    {"name": "Link 3", "type": "webpage", "url": "https://github.com/danielfrori"}
                 ]
             }
         ]
     },
     {
-        "name": "Steam",
+        "name": "Menu 2",
         "submenu": [
-            {"name": "Library", "type": "command", "command": ["steam", "steam://open/games"]},
-            {"name": "Big Picture Mode", "type": "command", "command": ["steam", "steam://open/bigpicture"]},
-            {"name": "Steam Console", "type": "command", "command": ["steam", "steam://open/console"]},
-            {"name": "SteamDB", "type": "webpage", "url": "https://steamdb.info/"},
-            {"name": "Restart Steam", "type": "function", "function": "restart_steam"}
+            {"name": "Command 1", "type": "command", "command": ["echo", "Running command 1!"]},
+            {"name": "Command 2", "type": "command", "command": ["echo", "Running command 2!"]}
         ]
     },
     {"type": "separator"},
-    {
-        "name": "System",
-        "submenu": [
-            {"name": "Restart PC", "type": "command", "command": ["reboot"]},
-            {"name": "Restart into Firmware Setup", "type": "command", "command": ["systemctl", "reboot", "--firmware-setup"]},
-            {"name": "Shutdown", "type": "command", "command": ["shutdown", "now"]}
-        ]
-    }
+    {"name": "Restart", "type": "function", "function":  "restart"},
+    {"name": "Quit", "type": "function", "function":  "quit"}
 ]

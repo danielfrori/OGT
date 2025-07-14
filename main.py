@@ -6,6 +6,7 @@ import subprocess
 import platform
 import time
 import os
+import sys
 import pathlib
 import json
 
@@ -21,28 +22,14 @@ def run_command(command):
 def open_webpage(page):
     webbrowser.open(page)
 
-def restart_steam():
-    try:
-        if platform.system() == "Windows":
-            run_command(["taskkill", "/IM", "steam.exe", "/F"])
-            time.sleep(3)
-    
-            # Attempt default Steam path, adjust if installed elsewhere
-            steam_path = os.path.expandvars(r"C:\\Program Files (x86)\\Steam\\Steam.exe")
-    
-            if not os.path.exists(steam_path):
-                print(f"Could not find Steam at {steam_path}. Please check the path.")
-                return
+def restart_app(icon):
+    icon.stop()
+    python = sys.executable
+    script = os.path.abspath(__file__)
+    subprocess.Popen([python, script])    
+    sys.exit()
 
-            subprocess.Popen([steam_path])
-        if platform.system() == "Linux":
-            run_command(["pkill", "-x", "steam"])
-            time.sleep(3)
-            subprocess.Popen(["steam"])
-    except Exception as e:
-        print("Error restarting Steam:", e)
-
-def on_quit(icon, item):
+def quit_app(icon):
     icon.stop()
 
 def create_menu_item(config):
@@ -50,14 +37,17 @@ def create_menu_item(config):
         submenu_items = [create_menu_item(sub_item) for sub_item in config['submenu']]
         return item(config['name'], Menu(*submenu_items))
     else:
-        action = None
-        if config.get('type') == 'webpage':
-            action = lambda icon, item: open_webpage(config['url'])
-        elif config.get('type') == 'command':
-            action = lambda icon, item: run_command(config['command'])
-        elif config.get('type') == 'function':
-            if config['function'] == 'restart_steam':
-                action = lambda icon, item: restart_steam()
+        action = None                
+        match config['type']:
+            case 'webpage':
+                action = lambda icon, item: open_webpage(config['url'])
+            case 'command':
+                action = lambda icon, item: run_command(config['command'])
+            case 'function':
+                if config['function'] == 'restart':
+                    action = lambda icon, item: restart_app(icon)
+                elif config['function'] == 'quit':
+                    action = lambda icon, item: quit_app(icon)
         return item(config['name'], action)
 
 def load_config(config_path):
@@ -87,10 +77,9 @@ def start_tray():
     menu_items = []
     for config_item in config:
         if config_item.get('type') == 'separator':
-            menu_items.append(Menu.SEPARATOR)            
+            menu_items.append(Menu.SEPARATOR)
         else:
             menu_items.append(create_menu_item(config_item))
-    menu_items.append(item("Quit", on_quit))
 
     icon = pystray.Icon("test_icon", icon_image, "Ori General Tools", menu=Menu(*menu_items))    
     icon.run()

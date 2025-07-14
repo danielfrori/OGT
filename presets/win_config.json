@@ -22,13 +22,6 @@
                 ]
             },
             {
-                "name": "Linux",
-                "submenu": [
-                    {"name": "ArchWiki", "type": "webpage", "url": "https://wiki.archlinux.org/title/Main_page"},
-                    {"name": "ProtonDB", "type": "webpage", "url": "https://www.protondb.com/"}
-                ]
-            },
-            {
                 "name": "AI",
                 "submenu": [
                     {"name": "ChatGPT", "type": "webpage", "url": "https://chatgpt.com/"},
@@ -55,5 +48,7 @@
             {"name": "Restart into Firmware Setup", "type": "command", "command": ["shutdown", "/r", "/fw", "/f", "/t", "0"]},
             {"name": "Shutdown", "type": "command", "command": ["shutdown", "/s", "/t", "0"]}
         ]
-    }
+    },
+    {"name": "Restart", "type": "function", "function":  "restart"},
+    {"name": "Quit", "type": "function", "function":  "quit"}
 ]
