@@ -15,7 +15,8 @@ def resource_path(relative_path):
 
 def run_command(command):
     try:
-        subprocess.run(command, check=True)
+        # subprocess.run(command, check=True)
+        subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     except Exception as e:
         print("Error running command:", e)
 
@@ -44,10 +45,15 @@ def create_menu_item(config):
             case 'command':
                 action = lambda icon, item: run_command(config['command'])
             case 'function':
-                if config['function'] == 'restart':
-                    action = lambda icon, item: restart_app(icon)
-                elif config['function'] == 'quit':
-                    action = lambda icon, item: quit_app(icon)
+                match config['function']:
+                    case 'restart':
+                        action = lambda icon, item: restart_app(icon)
+                    case 'quit':
+                        action = lambda icon, item: quit_app(icon)
+                    case _:
+                        print("Unknown function:", config['function'], "-", config['name'])
+            case _:
+                print("Unknown type:", config['type'], "-", config['name'])
         return item(config['name'], action)
 
 def load_config(config_path):
