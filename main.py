@@ -9,6 +9,8 @@ import os
 import sys
 import pathlib
 import json
+import tkinter as tk
+from tkinter import messagebox
 
 def resource_path(relative_path):
     return str(pathlib.Path(__file__).parent / relative_path)
@@ -33,23 +35,51 @@ def restart_app(icon):
 def quit_app(icon):
     icon.stop()
 
+def show_confirmation_dialog(config):
+    try:
+        # use this default if message is not provide
+        message = config.get('confirm_message', f"Are you sure you want to execute '{config['name']}'?")
+        
+        root = tk.Tk()
+        root.withdraw()
+        result = messagebox.askyesno("OGT", message)
+        root.destroy()
+        return result
+    except tk.TclError as e:
+        print(f"Error: Failed to show confirmation dialog: {str(e)}")
+        return False
+
 def create_menu_item(config):
     if 'submenu' in config:
         submenu_items = [create_menu_item(sub_item) for sub_item in config['submenu']]
         return item(config['name'], Menu(*submenu_items))
     else:
-        action = None                
+        action = None
+        confirm_required = config.get('confirm', False)
+                
         match config['type']:
             case 'webpage':
-                action = lambda icon, item: open_webpage(config['url'])
+                if confirm_required:
+                    action = lambda icon, item: open_webpage(config['url']) if show_confirmation_dialog(config) else None
+                else:
+                    action = lambda icon, item: open_webpage(config['url'])
             case 'command':
-                action = lambda icon, item: run_command(config['command'])
+                if confirm_required:
+                    action = lambda icon, item: run_command(config['command']) if show_confirmation_dialog(config) else None
+                else:
+                    action = lambda icon, item: run_command(config['command'])
             case 'function':
                 match config['function']:
                     case 'restart':
-                        action = lambda icon, item: restart_app(icon)
+                        if confirm_required:
+                            action = lambda icon, item: restart_app(icon) if show_confirmation_dialog(config) else None
+                        else:
+                            action = lambda icon, item: restart_app(icon)
                     case 'quit':
-                        action = lambda icon, item: quit_app(icon)
+                        if confirm_required:
+                            action = lambda icon, item: quit_app(icon) if show_confirmation_dialog(config) else None
+                        else:
+                            action = lambda icon, item: quit_app(icon)
                     case _:
                         print("Unknown function:", config['function'], "-", config['name'])
             case _:
@@ -87,7 +117,7 @@ def start_tray():
         else:
             menu_items.append(create_menu_item(config_item))
 
-    icon = pystray.Icon("test_icon", icon_image, "Ori General Tools", menu=Menu(*menu_items))    
+    icon = pystray.Icon("test_icon", icon_image, "OGT", menu=Menu(*menu_items))    
     icon.run()
 
 if __name__ == "__main__":
