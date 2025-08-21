@@ -50,9 +50,9 @@
     {
         "name": "System",
         "submenu": [
-            {"name": "Restart PC", "type": "command", "command": ["reboot"]},
-            {"name": "Restart into Firmware Setup", "type": "command", "command": ["systemctl", "reboot", "--firmware-setup"]},
-            {"name": "Shutdown", "type": "command", "command": ["shutdown", "now"]}
+            {"name": "Restart PC", "type": "command", "command": ["reboot"], "confirm":  true, "confirm_message": "Are you sure you want to restart your computer?"},
+            {"name": "Restart into Firmware Setup", "type": "command", "command": ["systemctl", "reboot", "--firmware-setup"], "confirm":  true, "confirm_message": "Are you sure you want to restart into firmware setup (BIOS/UEFI)?"},
+            {"name": "Shutdown", "type": "command", "command": ["shutdown", "now"], "confirm":  true, "confirm_message": "Are you sure you want to shut down your computer?"}
         ]
     },
     {"name": "Restart", "type": "function", "function":  "restart"},
