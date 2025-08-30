@@ -3,8 +3,6 @@ from pystray import MenuItem as item, Menu
 from PIL import Image
 import webbrowser
 import subprocess
-import platform
-import time
 import os
 import sys
 import pathlib
@@ -50,6 +48,8 @@ def show_confirmation_dialog(config):
         return False
 
 def create_menu_item(config):
+    if config.get("type") == 'separator':
+        return Menu.SEPARATOR
     if 'submenu' in config:
         submenu_items = [create_menu_item(sub_item) for sub_item in config['submenu']]
         return item(config['name'], Menu(*submenu_items))
