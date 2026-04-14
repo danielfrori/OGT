@@ -105,7 +105,11 @@ def start_tray():
         print(f"Error: '{icon_path}' file not found.")
         return
 
-    config_path = resource_path("config.json")
+    if sys.platform == "win32":
+        config_path = os.path.join(os.getenv("APPDATA"), "OGT", "config.json")
+    else:
+        config_path = os.path.expanduser("~/.config/ogt/config.json")
+
     config = load_config(config_path)
     if not config:
         return
