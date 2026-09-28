@@ -15,7 +15,6 @@ def resource_path(relative_path):
 
 def run_command(command):
     try:
-        # subprocess.run(command, check=True)
         subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     except Exception as e:
         print("Error running command:", e)
@@ -35,7 +34,6 @@ def quit_app(icon):
 
 def show_confirmation_dialog(config):
     try:
-        # use this default if message is not provide
         message = config.get('confirm_message', f"Are you sure you want to execute '{config['name']}'?")
         
         root = tk.Tk()
@@ -86,12 +84,36 @@ def create_menu_item(config):
                 print("Unknown type:", config['type'], "-", config['name'])
         return item(config['name'], action)
 
+def load_preset(preset_path):
+    try:
+        with open(preset_path, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        print(f"Error: Preset '{preset_path}' not found.")
+        return None
+
+def save_config(config, config_path):
+    os.makedirs(os.path.dirname(config_path), exist_ok=True)
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=4)
+    
+def get_default_config():
+    if sys.platform == "win32":
+        return load_preset("presets/win_config.json")
+    else:
+        return load_preset("presets/linux_config.json")
+
 def load_config(config_path):
     try:
         with open(config_path, 'r') as f:
             return json.load(f)
     except FileNotFoundError:
-        print(f"Error: Configuration file '{config_path}' not found.")
+        print(f"Creating default configuration at {config_path}...")
+        default_config = get_default_config()
+        if default_config is not None:
+            save_config(default_config, config_path)
+            return load_config(config_path)
+        print("No valid configuration template found.")
         return None
     except json.JSONDecodeError:
         print(f"Error: Invalid JSON format in '{config_path}'.")
@@ -112,6 +134,7 @@ def start_tray():
 
     config = load_config(config_path)
     if not config:
+        print("No valid configuration found after attempts to create default.")
         return
 
     menu_items = []
