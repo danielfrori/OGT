@@ -1,0 +1,8 @@
+# OGT runtime dependencies
+# Requires Python 3.8+
+#
+# Also needs tkinter, which ships with Python on Windows/macOS.
+# On Debian/Ubuntu: sudo apt install python3-tk
+ 
+pystray>=0.19.5
+Pillow>=10.0.0
