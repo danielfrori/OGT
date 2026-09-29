@@ -1,6 +1,6 @@
 # OGT
 
-A simple system tray app in Python that provides a customizable menu with links, commands, and actions.
+A system tray app in Python that provides a customizable menu with links, commands, and actions.
 
 ## Features
 
@@ -8,6 +8,20 @@ A simple system tray app in Python that provides a customizable menu with links,
 - Open webpages from the tray
 - Execute terminal commands (with optional confirmation dialogs)
 - Run scripts
+
+## Requirements
+
+- Python 3.8 or newer
+- `pystray` and `Pillow` (see `requirements.txt`)
+- `tkinter` (used for confirmation and error dialogs).
+
+## Installation
+
+```bash
+git clone https://github.com/danielfrori/OGT.git
+cd OGT
+pip install -r requirements.txt
+```
 
 ## Usage
 
@@ -43,7 +57,14 @@ Edit your config file with JSON:
 ]
 ```
 
-## Item Types
+### Notes
+
+- Commands should be lists, like `["echo", "test"]`. Use full paths where you can, especially on Windows.
+- `webpage` only opens `http://` and `https://` links. Other schemes (such as `file://`) are blocked.
+- If a menu entry is invalid (missing `name`, unknown `type`, missing `url`/`command`/`function`, and so on), it is skipped and the reason is printed to the console. The rest of the menu still loads.
+- If the config file can't be read, contains invalid JSON, or has no valid entries, OGT shows an error dialog and exits.
+
+### Item Types
 
 | Type | Description | Example |
 |------|-------------|---------|
@@ -67,7 +88,11 @@ Add `confirm: true` and `confirm_message` to require user approval:
 }
 ```
 
-## Presets
+### Icon
+
+Replace `icon.ico` with your own .ico file for custom tray icon.
+
+### Presets
 
 The app auto-generates your config using the provided presets:
 
@@ -76,6 +101,6 @@ The app auto-generates your config using the provided presets:
 
 These are used when you don't have a config file yet.
 
-## Icon
+---
 
-Replace `icon.ico` with your own .ico file for custom tray icon.
+OGT is released under the [MIT License](LICENSE).
